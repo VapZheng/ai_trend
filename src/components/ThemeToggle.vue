@@ -5,51 +5,113 @@ const { isDarkMode, toggleDarkMode } = useDarkMode();
 </script>
 
 <template>
-  <div class="theme-toggle">
-    <el-button
-      :icon="isDarkMode ? 'Sunny' : 'Moon'"
-      circle
-      @click="toggleDarkMode"
-      :title="isDarkMode ? '切换到浅色模式' : '切换到深色模式'"
-      aria-label="切换深色模式"
-      class="theme-toggle__button"
-    />
-  </div>
+  <button
+    class="theme-toggle"
+    @click="toggleDarkMode"
+    :title="isDarkMode ? '切换到浅色模式' : '切换到深色模式'"
+    aria-label="切换深色模式"
+  >
+    <div class="theme-toggle__icon">
+      <svg
+        v-if="!isDarkMode"
+        class="theme-toggle__svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <!-- 月亮图标 -->
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+      <svg
+        v-else
+        class="theme-toggle__svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <!-- 太阳图标 -->
+        <circle cx="12" cy="12" r="5" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </svg>
+    </div>
+  </button>
 </template>
 
 <style scoped>
 .theme-toggle {
   display: flex;
   align-items: center;
-}
-
-.theme-toggle__button {
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  cursor: pointer;
   transition: all 200ms ease-out;
 }
 
-.theme-toggle__button:hover {
-  transform: scale(1.1) rotate(20deg);
+.theme-toggle:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-tertiary);
+  color: var(--color-primary);
+  transform: scale(1.05);
 }
 
-.theme-toggle__button:active {
+.theme-toggle:active {
   transform: scale(0.95);
 }
 
-:deep(.el-button) {
-  border-color: var(--color-border);
-  background: var(--color-bg-secondary);
-  color: var(--color-text-primary);
-}
-
-:deep(.el-button:hover) {
-  background: var(--color-bg-tertiary);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-:deep(.el-button:focus) {
+.theme-toggle:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
+
+.theme-toggle__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.theme-toggle__svg {
+  width: 100%;
+  height: 100%;
+  animation: rotateIn 300ms ease-out;
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle__svg {
+    animation: none;
+  }
+}
 </style>
+
 

@@ -176,27 +176,221 @@ function rowClassName({ row }: { row: TrendItem }) {
 </template>
 
 <style scoped>
+.table-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  transition: all 200ms ease-out;
+}
+
+.table-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.table-head h3 {
+  margin: 0 0 8px;
+  color: var(--color-text-primary);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.table-head p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.table-head__meta {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.desktop-table {
+  overflow-x: auto;
+}
+
+.mobile-list {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobile-card {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-bg-secondary);
+  cursor: pointer;
+  transition: all 150ms ease-out;
+  text-align: left;
+  font-size: 13px;
+}
+
+.mobile-card:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-tertiary);
+  box-shadow: var(--shadow-sm);
+}
+
+.mobile-card--active {
+  border-color: var(--color-primary);
+  background: rgba(37, 99, 235, 0.08);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .mobile-card--active {
+    background: rgba(37, 99, 235, 0.15);
+  }
+}
+
+html.dark-mode .mobile-card--active {
+  background: rgba(37, 99, 235, 0.15);
+}
+
+.mobile-card--compared {
+  opacity: 0.7;
+}
+
+.mobile-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.mobile-card__head strong {
+  display: block;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.mobile-card__head p {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.mobile-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
 .mobile-card__actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-}
-
-.mobile-card__actions {
   margin-top: 12px;
 }
 
 .mobile-card__hint {
-  color: #64748b;
+  color: var(--color-text-tertiary);
   font-size: 13px;
 }
 
+:deep(.trend-table) {
+  background: transparent;
+  color: var(--color-text-primary);
+}
+
+:deep(.trend-table .el-table__header) {
+  background: var(--color-bg-secondary);
+}
+
+:deep(.trend-table .el-table__header th) {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+:deep(.trend-table .el-table__body tr) {
+  background: transparent;
+  transition: all 150ms ease-out;
+}
+
+:deep(.trend-table .el-table__body tr:hover > td) {
+  background: var(--color-bg-secondary);
+}
+
+:deep(.trend-table .el-table__body td) {
+  background: transparent;
+  border-color: var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+:deep(.trend-row--active td) {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :deep(.trend-row--active td) {
+    background: rgba(37, 99, 235, 0.15);
+  }
+}
+
+html.dark-mode :deep(.trend-row--active td) {
+  background: rgba(37, 99, 235, 0.15);
+}
+
 :deep(.trend-row--compared td.el-table__cell) {
-  box-shadow: inset 3px 0 0 rgba(59, 130, 246, 0.9);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.strength-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rank-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary-lighter);
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .rank-number {
+    background: rgba(37, 99, 235, 0.2);
+  }
+}
+
+html.dark-mode .rank-number {
+  background: rgba(37, 99, 235, 0.2);
 }
 
 @media (max-width: 768px) {
+  .desktop-table {
+    display: none;
+  }
+
+  .mobile-list {
+    display: flex;
+  }
+
   .mobile-card__actions {
     display: grid;
   }
