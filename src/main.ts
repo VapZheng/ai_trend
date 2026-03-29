@@ -5,5 +5,6 @@ import App from './App.vue';
 import './styles.css';
 import './dashboard-content.css';
 import './dashboard-overrides.css';
+import './skeleton-dark-mode.css';
 
 createApp(App).use(ElementPlus).mount('#app');

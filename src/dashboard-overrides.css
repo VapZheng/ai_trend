@@ -325,3 +325,30 @@
     min-width: 980px;
   }
 }
+
+/* 骨架屏深色模式修复 */
+@media (prefers-color-scheme: dark) {
+  .el-skeleton {
+    background-color: var(--color-bg-secondary) !important;
+  }
+
+  .el-skeleton__item,
+  .el-skeleton__text,
+  .el-skeleton__paragraph,
+  .el-skeleton__p-item {
+    background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%) !important;
+    background-size: 200% 100% !important;
+  }
+}
+
+html.dark-mode .el-skeleton {
+  background-color: var(--color-bg-secondary) !important;
+}
+
+html.dark-mode .el-skeleton__item,
+html.dark-mode .el-skeleton__text,
+html.dark-mode .el-skeleton__paragraph,
+html.dark-mode .el-skeleton__p-item {
+  background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%) !important;
+  background-size: 200% 100% !important;
+}
