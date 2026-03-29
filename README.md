@@ -119,3 +119,4 @@ docker compose up --build
 - `TREND_DB_PATH`：自定义 `sqlite` 文件路径
 - `TREND_HOST`：自定义监听地址
 - `TREND_PORT`：自定义监听端口
+# ai_trend
