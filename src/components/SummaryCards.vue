@@ -33,21 +33,30 @@ const strongestNote = computed(() => {
   <section class="summary-section">
     <div class="summary-grid">
       <el-card class="summary-card summary-card--accent" shadow="hover" role="region" aria-label="总体结论">
-        <p class="summary-label">总体结论</p>
-        <h2>{{ market.conclusionTitle }}</h2>
-        <p class="summary-note">{{ market.conclusionNote }}</p>
+        <div class="summary-card__header">
+          <i class="el-icon-data-analysis"></i>
+          <p class="summary-label">总体结论</p>
+        </div>
+        <h2 class="summary-card__title">{{ market.conclusionTitle }}</h2>
+        <p class="summary-card__note">{{ market.conclusionNote }}</p>
       </el-card>
 
       <el-card class="summary-card" shadow="hover" role="region" aria-label="YES / NO 分布">
-        <p class="summary-label">YES / NO</p>
-        <h2>{{ distributionValue }}</h2>
-        <p class="summary-note">{{ distributionNote }}</p>
+        <div class="summary-card__header">
+          <i class="el-icon-pie-chart"></i>
+          <p class="summary-label">YES / NO</p>
+        </div>
+        <h2 class="summary-card__title">{{ distributionValue }}</h2>
+        <p class="summary-card__note">{{ distributionNote }}</p>
       </el-card>
 
       <el-card class="summary-card" shadow="hover" role="region" aria-label="整体温度">
-        <p class="summary-label">整体温度</p>
-        <h2>{{ hasMarketData ? formatPercent(market.averageDeviation) : '--' }}</h2>
-        <p class="summary-note">{{ hasMarketData ? market.temperatureLabel : '等待数据' }}</p>
+        <div class="summary-card__header">
+          <i class="el-icon-temperature"></i>
+          <p class="summary-label">整体温度</p>
+        </div>
+        <h2 class="summary-card__title">{{ hasMarketData ? formatPercent(market.averageDeviation) : '--' }}</h2>
+        <p class="summary-card__note">{{ hasMarketData ? market.temperatureLabel : '等待数据' }}</p>
       </el-card>
     </div>
   </section>

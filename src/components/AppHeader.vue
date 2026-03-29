@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { AUTO_REFRESH_CONSTRAINT_NOTE } from '../constants';
 import type { AutoRefreshState, RefreshRun, TrendViewKey, TrendViewOption } from '../types';
 import { getRunSourceLabel } from '../utils/dashboardOverview';
@@ -20,6 +20,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:activeTrendView': [value: TrendViewKey];
 }>();
+
+const showDetails = ref(false);
 
 const isLatestView = computed(() => props.latestDataDate.length > 0 && props.selectedDataDate === props.latestDataDate);
 const headerDescription = computed(() => `当前按 ${props.trendViewLabel} 观察市场强弱。${props.trendViewDescription}`);
@@ -103,6 +105,10 @@ const executionTagType = computed(() => {
 function handleTrendViewChange(value: string | number | boolean) {
   emit('update:activeTrendView', value as TrendViewKey);
 }
+
+function toggleDetails() {
+  showDetails.value = !showDetails.value;
+}
 </script>
 
 <template>
@@ -131,7 +137,15 @@ function handleTrendViewChange(value: string | number | boolean) {
           <span v-if="isRefreshing" class="loading-spinner">⟳</span>
           {{ freshnessLabel }}
         </el-tag>
-        <span class="app-header__fact-time">{{ freshnessNote }}</span>
+        <el-button
+          v-if="freshnessNote"
+          link
+          type="primary"
+          size="small"
+          :icon="showDetails ? 'CaretTop' : 'CaretBottom'"
+          @click="toggleDetails"
+          aria-label="切换详细信息"
+        />
       </div>
 
       <div class="app-header__fact-compact">
@@ -140,8 +154,24 @@ function handleTrendViewChange(value: string | number | boolean) {
           <span v-if="isRefreshing" class="loading-spinner">⟳</span>
           {{ executionLabel }}
         </el-tag>
-        <span class="app-header__fact-time">{{ executionNote }}</span>
       </div>
     </div>
+
+    <transition name="slide-fade">
+      <div v-if="showDetails" class="app-header__details">
+        <div class="app-header__detail-item">
+          <span class="app-header__detail-label">数据时间</span>
+          <span class="app-header__detail-value">{{ freshnessNote }}</span>
+        </div>
+        <div class="app-header__detail-item">
+          <span class="app-header__detail-label">执行信息</span>
+          <span class="app-header__detail-value">{{ executionNote }}</span>
+        </div>
+        <div class="app-header__detail-item">
+          <span class="app-header__detail-label">自动刷新</span>
+          <span class="app-header__detail-value">{{ autoRefreshSummary }}</span>
+        </div>
+      </div>
+    </transition>
   </section>
 </template>

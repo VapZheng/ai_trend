@@ -106,6 +106,33 @@ select {
   font-size: 12px;
 }
 
+.app-header__details {
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  margin-top: 12px;
+}
+
+.app-header__detail-item {
+  display: grid;
+  gap: 4px;
+}
+
+.app-header__detail-label {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.app-header__detail-value {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .hero-main,
 .hero-highlights {
   display: grid;
@@ -291,6 +318,22 @@ select {
   border-radius: 24px !important;
   background: rgba(255, 255, 255, 0.92) !important;
   box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08) !important;
+  transition: all 200ms ease-out;
+}
+
+.summary-card:hover {
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12) !important;
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.2) !important;
+}
+
+.summary-card--accent {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.96)) !important;
+  border-color: rgba(37, 99, 235, 0.2) !important;
+}
+
+.summary-card--accent:hover {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(255, 255, 255, 0.98)) !important;
 }
 
 .summary-card .el-card__body {
@@ -299,8 +342,32 @@ select {
   padding: 20px;
 }
 
-.summary-card--accent {
-  background: linear-gradient(135deg, rgba(219, 234, 254, 0.9), rgba(255, 255, 255, 0.96)) !important;
+.summary-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.summary-card__header i {
+  font-size: 18px;
+  color: #2563EB;
+  flex-shrink: 0;
+}
+
+.summary-card__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1E293B;
+  line-height: 1.3;
+}
+
+.summary-card__note {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .summary-note {
@@ -311,6 +378,118 @@ select {
 .filter-card {
   padding: 20px;
   margin-bottom: 24px;
+}
+
+.active-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #2563EB;
+  animation: slideDown 200ms ease-out;
+}
+
+.active-filters__label {
+  font-weight: 500;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.filter-presets {
+  margin-top: 20px;
+}
+
+.filter-presets__head {
+  margin-bottom: 12px;
+}
+
+.filter-presets__eyebrow {
+  margin: 0 0 8px;
+  color: #64748b;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.preset-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.preset-chip {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 16px;
+  background: rgba(248, 250, 252, 0.9);
+  cursor: pointer;
+  transition: all 150ms ease-out;
+  text-align: left;
+  font-size: 13px;
+}
+
+.preset-chip:hover:not(:disabled) {
+  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(248, 250, 252, 0.98);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+  transform: translateY(-2px);
+}
+
+.preset-chip--active {
+  border-color: #2563EB;
+  background: rgba(37, 99, 235, 0.08);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.preset-chip--active:hover {
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.preset-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.preset-chip__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.preset-chip__label {
+  font-weight: 500;
+  color: #1E293B;
+}
+
+.preset-chip__count {
+  flex-shrink: 0;
+}
+
+.preset-chip__description {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .filter-grid {
@@ -444,4 +623,31 @@ select:focus-visible,
 .error-message {
   color: #DC2626;
   font-weight: 500;
+}
+
+/* 过渡动画 */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 200ms ease-out;
+}
+
+.slide-fade-enter-from {
+  transform: translateY(-8px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateY(-8px);
+  opacity: 0;
+}
+
+/* 平滑过滤动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 150ms ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

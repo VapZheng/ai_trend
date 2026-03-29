@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import {
   DATA_TIME_LABEL,
   FILTER_PRESET_OPTIONS,
@@ -28,6 +29,15 @@ const emit = defineEmits<{
   reset: [];
 }>();
 
+const activeFiltersCount = computed(() => {
+  let count = 0;
+  if (props.searchTerm) count++;
+  if (props.statusFilter !== 'all') count++;
+  if (props.sortKey !== 'default') count++;
+  if (props.selectedDataDate) count++;
+  return count;
+});
+
 function isPresetDisabled(presetKey: FilterPresetKey): boolean {
   return presetKey !== 'all' && props.presetCounts[presetKey] === 0;
 }
@@ -35,6 +45,13 @@ function isPresetDisabled(presetKey: FilterPresetKey): boolean {
 
 <template>
   <section class="filter-card">
+    <transition name="fade">
+      <div v-if="activeFiltersCount > 0" class="active-filters">
+        <span class="active-filters__label">已应用 {{ activeFiltersCount }} 个过滤</span>
+        <el-button link type="primary" size="small" @click="emit('reset')">清除全部</el-button>
+      </div>
+    </transition>
+
     <div class="filter-grid">
       <el-input
         :model-value="props.searchTerm"
