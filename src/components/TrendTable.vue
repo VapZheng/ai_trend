@@ -252,12 +252,12 @@ function rowClassName({ row }: { row: TrendItem }) {
 
 @media (prefers-color-scheme: dark) {
   .mobile-card--active {
-    background: rgba(37, 99, 235, 0.15);
+    background: rgba(96, 165, 250, 0.08);
   }
 }
 
 html.dark-mode .mobile-card--active {
-  background: rgba(37, 99, 235, 0.15);
+  background: rgba(96, 165, 250, 0.08);
 }
 
 .mobile-card--compared {
@@ -341,12 +341,12 @@ html.dark-mode .mobile-card--active {
 
 @media (prefers-color-scheme: dark) {
   :deep(.trend-row--active td) {
-    background: rgba(37, 99, 235, 0.15);
+    background: rgba(96, 165, 250, 0.08);
   }
 }
 
 html.dark-mode :deep(.trend-row--active td) {
-  background: rgba(37, 99, 235, 0.15);
+  background: rgba(96, 165, 250, 0.08);
 }
 
 :deep(.trend-row--compared td.el-table__cell) {
@@ -374,12 +374,14 @@ html.dark-mode :deep(.trend-row--active td) {
 
 @media (prefers-color-scheme: dark) {
   .rank-number {
-    background: rgba(37, 99, 235, 0.2);
+    background: rgba(96, 165, 250, 0.15);
+    color: #93C5FD;
   }
 }
 
 html.dark-mode .rank-number {
-  background: rgba(37, 99, 235, 0.2);
+  background: rgba(96, 165, 250, 0.15);
+  color: #93C5FD;
 }
 
 @media (max-width: 768px) {

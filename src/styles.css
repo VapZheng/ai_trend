@@ -36,37 +36,45 @@
 /* 深色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-text-primary: #F1F5F9;
+    --color-text-primary: #E2E8F0;
     --color-text-secondary: #CBD5E1;
     --color-text-tertiary: #94A3B8;
     --color-bg-primary: #0F172A;
-    --color-bg-secondary: #1E293B;
-    --color-bg-tertiary: #334155;
-    --color-border: rgba(148, 163, 184, 0.2);
-    --color-border-light: rgba(148, 163, 184, 0.12);
+    --color-bg-secondary: #1A2332;
+    --color-bg-tertiary: #2D3E52;
+    --color-border: rgba(148, 163, 184, 0.15);
+    --color-border-light: rgba(148, 163, 184, 0.08);
 
-    --color-card-bg: rgba(30, 41, 59, 0.8);
-    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.5);
+    --color-primary: #60A5FA;
+    --color-primary-light: #93C5FD;
+    --color-primary-lighter: rgba(96, 165, 250, 0.15);
+
+    --color-card-bg: rgba(26, 35, 50, 0.7);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.35);
   }
 }
 
 /* 手动深色模式切换 */
 html.dark-mode {
-  --color-text-primary: #F1F5F9;
+  --color-text-primary: #E2E8F0;
   --color-text-secondary: #CBD5E1;
   --color-text-tertiary: #94A3B8;
   --color-bg-primary: #0F172A;
-  --color-bg-secondary: #1E293B;
-  --color-bg-tertiary: #334155;
-  --color-border: rgba(148, 163, 184, 0.2);
-  --color-border-light: rgba(148, 163, 184, 0.12);
+  --color-bg-secondary: #1A2332;
+  --color-bg-tertiary: #2D3E52;
+  --color-border: rgba(148, 163, 184, 0.15);
+  --color-border-light: rgba(148, 163, 184, 0.08);
 
-  --color-card-bg: rgba(30, 41, 59, 0.8);
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.5);
+  --color-primary: #60A5FA;
+  --color-primary-light: #93C5FD;
+  --color-primary-lighter: rgba(96, 165, 250, 0.15);
+
+  --color-card-bg: rgba(26, 35, 50, 0.7);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.35);
 }
 
 * {
@@ -94,15 +102,15 @@ select {
 @media (prefers-color-scheme: dark) {
   .page-shell {
     background:
-      radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
-      linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+      radial-gradient(circle at top left, rgba(96, 165, 250, 0.06), transparent 28%),
+      linear-gradient(180deg, #1A2332 0%, #0F172A 100%);
   }
 }
 
 html.dark-mode .page-shell {
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
-    linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.06), transparent 28%),
+    linear-gradient(180deg, #1A2332 0%, #0F172A 100%);
 }
 
 .page-main {
@@ -275,12 +283,12 @@ html.dark-mode .page-shell {
 
 @media (prefers-color-scheme: dark) {
   .hero-highlight {
-    background: rgba(30, 41, 59, 0.6);
+    background: rgba(26, 35, 50, 0.5);
   }
 }
 
 html.dark-mode .hero-highlight {
-  background: rgba(30, 41, 59, 0.6);
+  background: rgba(26, 35, 50, 0.5);
 }
 
 .hero-highlight span {
@@ -326,12 +334,12 @@ html.dark-mode .hero-highlight {
 
 @media (prefers-color-scheme: dark) {
   .meta-chip {
-    background: rgba(37, 99, 235, 0.15);
+    background: rgba(96, 165, 250, 0.1);
   }
 }
 
 html.dark-mode .meta-chip {
-  background: rgba(37, 99, 235, 0.15);
+  background: rgba(96, 165, 250, 0.1);
 }
 
 .meta-chip--compact {
@@ -430,16 +438,28 @@ html.dark-mode .meta-chip {
 
 @media (prefers-color-scheme: dark) {
   .summary-card--accent {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), var(--color-card-bg)) !important;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.08), var(--color-card-bg)) !important;
+    border-color: rgba(96, 165, 250, 0.15) !important;
   }
 }
 
 html.dark-mode .summary-card--accent {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), var(--color-card-bg)) !important;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.08), var(--color-card-bg)) !important;
+  border-color: rgba(96, 165, 250, 0.15) !important;
 }
 
 .summary-card--accent:hover {
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), var(--color-card-bg)) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .summary-card--accent:hover {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), var(--color-card-bg)) !important;
+  }
+}
+
+html.dark-mode .summary-card--accent:hover {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), var(--color-card-bg)) !important;
 }
 
 .summary-card__title {
@@ -483,12 +503,12 @@ html.dark-mode .summary-card--accent {
 
 @media (prefers-color-scheme: dark) {
   .active-filters {
-    background: rgba(37, 99, 235, 0.1);
+    background: rgba(96, 165, 250, 0.08);
   }
 }
 
 html.dark-mode .active-filters {
-  background: rgba(37, 99, 235, 0.1);
+  background: rgba(96, 165, 250, 0.08);
 }
 
 .active-filters__label {
@@ -557,12 +577,14 @@ html.dark-mode .active-filters {
 
 @media (prefers-color-scheme: dark) {
   .preset-chip--active {
-    background: rgba(37, 99, 235, 0.15);
+    background: rgba(96, 165, 250, 0.1);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.1);
   }
 }
 
 html.dark-mode .preset-chip--active {
-  background: rgba(37, 99, 235, 0.15);
+  background: rgba(96, 165, 250, 0.1);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.1);
 }
 
 .preset-chip__label {
