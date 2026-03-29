@@ -2,9 +2,10 @@ services:
   app:
     build: .
     ports:
-      - '8000:8000'
+      - '8001:8001'
     environment:
       TREND_DB_PATH: /app/data/trends.db
+      TREND_PORT: 8001
     volumes:
       - trend-data:/app/data
 

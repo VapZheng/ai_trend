@@ -200,38 +200,6 @@
     },
     {
       "autoStartTerminal": true,
-      "avatar": "css:realistic-9",
-      "collaborationMode": true,
-      "id": "01KKZX31VNZKXENJDEECCCC5M6",
-      "manualStatus": "online",
-      "name": "清陌",
-      "role": "",
-      "roleKey": "members.roles.member",
-      "roleType": "member",
-      "sandboxed": false,
-      "skillPaths": [],
-      "status": "online",
-      "terminalCommand": "codex",
-      "terminalType": "codex",
-      "unlimitedAccess": true
-    },
-    {
-      "autoStartTerminal": true,
-      "avatar": "css:realistic-4",
-      "collaborationMode": true,
-      "id": "01KM1VD0EBMW6XGQ54BQA6VDP2",
-      "name": "霓雪朔",
-      "role": "",
-      "roleKey": "members.roles.member",
-      "roleType": "member",
-      "sandboxed": false,
-      "status": "online",
-      "terminalCommand": "codex",
-      "terminalType": "codex",
-      "unlimitedAccess": true
-    },
-    {
-      "autoStartTerminal": true,
       "avatar": "/avatar-presets/supervisor/supervisor-default.gif",
       "collaborationMode": true,
       "id": "01KM1VDMKEZ5JAP8WQRAS68H0H",
@@ -247,32 +215,47 @@
     },
     {
       "autoStartTerminal": true,
-      "avatar": "css:realistic-8",
+      "avatar": "css:realistic-7",
       "collaborationMode": true,
-      "id": "01KMMK58XQMC1X0G03DR868S41",
-      "name": "墨灯槿",
+      "id": "01KMW6YKDH7G03JBZ242HCR4W1",
+      "name": "澜澄",
       "role": "",
       "roleKey": "members.roles.aiAssistant",
       "roleType": "assistant",
       "sandboxed": false,
       "status": "online",
-      "terminalCommand": "codex",
-      "terminalType": "codex",
+      "terminalCommand": "claude",
+      "terminalType": "claude",
+      "unlimitedAccess": true
+    },
+    {
+      "autoStartTerminal": true,
+      "avatar": "css:realistic-6",
+      "collaborationMode": true,
+      "id": "01KMW9HQRRAJB0EB48APCVPNQH",
+      "name": "竹河",
+      "role": "",
+      "roleKey": "members.roles.member",
+      "roleType": "member",
+      "sandboxed": false,
+      "status": "online",
+      "terminalCommand": "claude",
+      "terminalType": "claude",
       "unlimitedAccess": true
     },
     {
       "autoStartTerminal": true,
       "avatar": "css:realistic-4",
       "collaborationMode": true,
-      "id": "01KMMQKY2H60F13MQZP5TGQ6DP",
-      "name": "霄澄",
+      "id": "01KMW9HXDV556YXQ4HRTZNRJWS",
+      "name": "清石桐",
       "role": "",
-      "roleKey": "members.roles.member",
-      "roleType": "member",
+      "roleKey": "members.roles.aiAssistant",
+      "roleType": "assistant",
       "sandboxed": false,
       "status": "online",
-      "terminalCommand": "codex",
-      "terminalType": "codex",
+      "terminalCommand": "claude",
+      "terminalType": "claude",
       "unlimitedAccess": true
     }
   ],
@@ -280,7 +263,7 @@
   "terminal": {
     "recentClosedTabs": [
       {
-        "closedAt": 1774600116464,
+        "closedAt": 1774766219992,
         "memberId": "01KMMK58XQMC1X0G03DR868S41"
       }
     ]

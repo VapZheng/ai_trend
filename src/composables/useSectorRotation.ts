@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type {
   RefreshRun,
@@ -8,6 +8,7 @@ import type {
   TrendItem,
   TrendViewKey,
 } from '../types';
+import { AUTO_REFRESH_INTERVAL_SECONDS } from '../constants';
 import { buildMarketOverview } from '../utils/dashboardOverview';
 import { DEFAULT_TREND_VIEW_KEY, TREND_VIEW_OPTIONS, getTrendViewMeta } from '../utils/trendViews';
 
@@ -26,6 +27,8 @@ export function useSectorRotation() {
   const activeTrendView = ref<TrendViewKey>(DEFAULT_TREND_VIEW_KEY);
   const selectedCode = ref('');
   const detailVisible = ref(false);
+  let pollTimer: number | null = null;
+  let isRequestInFlight = false;
 
   const activeDatasetView = computed(() => state.dataset.value?.views[activeTrendView.value] ?? null);
   const activeTrendViewMeta = computed(() => getTrendViewMeta(activeTrendView.value));
@@ -39,8 +42,30 @@ export function useSectorRotation() {
   const selectedItem = computed(() => items.value.find((item) => item.code === selectedCode.value) ?? items.value[0] ?? null);
   const selectedTarget = computed(() => state.targets.value.find((target) => target.code === selectedItem.value?.code) ?? null);
 
+  async function pollLoad() {
+    if (isRequestInFlight) return;
+    isRequestInFlight = true;
+    try {
+      applySectorRotation(state, await requestSectorRotation('/api/sector-rotation/refresh', 'POST'));
+      state.errorMessage.value = '';
+    } catch (error) {
+      state.errorMessage.value = error instanceof Error ? error.message : '未知错误';
+    } finally {
+      isRequestInFlight = false;
+      pollTimer = window.setTimeout(pollLoad, AUTO_REFRESH_INTERVAL_SECONDS * 1000);
+    }
+  }
+
+  function schedulePoll() {
+    pollTimer = window.setTimeout(pollLoad, AUTO_REFRESH_INTERVAL_SECONDS * 1000);
+  }
+
   onMounted(() => {
-    void loadSectorRotation(state);
+    void loadSectorRotation(state, schedulePoll);
+  });
+
+  onBeforeUnmount(() => {
+    if (pollTimer !== null) window.clearTimeout(pollTimer);
   });
 
   watch(state.dataset, (dataset) => syncActiveTrendView(activeTrendView, dataset ?? null), { immediate: true });
@@ -87,10 +112,13 @@ function createState(): SectorRotationState {
   };
 }
 
-async function loadSectorRotation(state: SectorRotationState) {
+async function loadSectorRotation(state: SectorRotationState, onComplete?: () => void) {
   await withBusy(state.isLoading, state.errorMessage, async () => {
     applySectorRotation(state, await requestSectorRotation('/api/sector-rotation'));
   });
+  if (onComplete) {
+    onComplete();
+  }
 }
 
 async function refreshSectorRotation(state: SectorRotationState) {

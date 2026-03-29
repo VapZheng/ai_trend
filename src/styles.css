@@ -749,6 +749,51 @@ html.dark-mode .preset-chip--active {
   background-size: 200% 100%;
 }
 
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%);
+  }
+}
+
+html.dark-mode .skeleton {
+  background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%);
+}
+
+/* Element Plus 骨架屏深色模式 */
+@media (prefers-color-scheme: dark) {
+  .el-skeleton,
+  .el-skeleton__item,
+  .el-skeleton__text,
+  .el-skeleton__paragraph,
+  .el-skeleton__p-item {
+    background-color: var(--color-bg-secondary) !important;
+  }
+
+  .el-skeleton__item,
+  .el-skeleton__text,
+  .el-skeleton__paragraph,
+  .el-skeleton__p-item {
+    background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%) !important;
+    background-size: 200% 100% !important;
+  }
+}
+
+html.dark-mode .el-skeleton,
+html.dark-mode .el-skeleton__item,
+html.dark-mode .el-skeleton__text,
+html.dark-mode .el-skeleton__paragraph,
+html.dark-mode .el-skeleton__p-item {
+  background-color: var(--color-bg-secondary) !important;
+}
+
+html.dark-mode .el-skeleton__item,
+html.dark-mode .el-skeleton__text,
+html.dark-mode .el-skeleton__paragraph,
+html.dark-mode .el-skeleton__p-item {
+  background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%) !important;
+  background-size: 200% 100% !important;
+}
+
 /* 尊重用户的运动偏好 */
 @media (prefers-reduced-motion: reduce) {
   .loading-spinner,
