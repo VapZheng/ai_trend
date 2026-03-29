@@ -81,41 +81,29 @@ select {
 }
 
 .app-header__status {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 20px;
-  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 12px;
   border-top: 1px solid rgba(148, 163, 184, 0.16);
 }
 
-.app-header__fact {
-  display: grid;
-  gap: 6px;
-  min-width: 0;
-}
-
-.app-header__fact-head {
+.app-header__fact-compact {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  font-size: 13px;
 }
 
 .app-header__fact-label {
-  color: #64748b;
+  color: #475569;
   font-size: 13px;
   font-weight: 600;
 }
 
-.app-header__fact p,
-.app-header__refresh-note {
-  margin: 0;
+.app-header__fact-time {
   color: #64748b;
-  font-size: 14px;
-}
-
-.app-header__refresh-note {
-  grid-column: 1 / -1;
+  font-size: 12px;
 }
 
 .hero-main,
@@ -293,7 +281,7 @@ select {
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
@@ -394,4 +382,66 @@ select {
   .app-header__status {
     grid-template-columns: 1fr;
   }
+}
+
+/* 加载动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  margin-right: 4px;
+}
+
+.skeleton {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+/* 尊重用户的运动偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner,
+  .skeleton {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* 键盘焦点指示 */
+*:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+}
+
+/* 可访问性：错误消息 */
+[role="alert"],
+.error-message {
+  color: #DC2626;
+  font-weight: 500;
 }

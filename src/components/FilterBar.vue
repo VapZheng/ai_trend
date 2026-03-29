@@ -35,23 +35,13 @@ function isPresetDisabled(presetKey: FilterPresetKey): boolean {
 
 <template>
   <section class="filter-card">
-    <div class="filter-view-summary">
-      <div>
-        <p class="filter-presets__eyebrow">当前联动视图</p>
-        <h3 class="filter-presets__title">{{ props.trendView.title }}</h3>
-        <p class="filter-presets__tip">{{ props.trendView.description }}</p>
-      </div>
-      <el-tag effect="plain" round size="large" type="primary">{{ props.trendView.criticalLabel }}</el-tag>
-    </div>
-
-    <el-alert :closable="false" class="filter-view-alert" :title="props.trendViewNotice" type="info" />
-
     <div class="filter-grid">
       <el-input
         :model-value="props.searchTerm"
         clearable
-        :placeholder="`输入代码或名称查询当前 ${props.trendView.shortLabel} 视图`"
+        :placeholder="`输入代码或名称查询`"
         size="large"
+        aria-label="搜索代码或名称"
         @update:model-value="emit('update:searchTerm', $event)"
       />
 
@@ -59,6 +49,7 @@ function isPresetDisabled(presetKey: FilterPresetKey): boolean {
         :model-value="props.statusFilter"
         class="status-filter"
         size="large"
+        aria-label="按状态过滤"
         @update:model-value="emit('update:statusFilter', $event)"
       >
         <el-radio-button
@@ -74,6 +65,7 @@ function isPresetDisabled(presetKey: FilterPresetKey): boolean {
         :model-value="props.sortKey"
         placeholder="排序方式"
         size="large"
+        aria-label="选择排序方式"
         @update:model-value="emit('update:sortKey', $event)"
       >
         <el-option
@@ -87,30 +79,27 @@ function isPresetDisabled(presetKey: FilterPresetKey): boolean {
       <el-select
         :model-value="props.selectedDataDate"
         class="date-filter"
-        :placeholder="`选择 ${props.trendView.shortLabel} 数据时间`"
+        :placeholder="`选择数据时间`"
         size="large"
+        aria-label="选择数据时间"
         @update:model-value="emit('update:selectedDataDate', $event)"
       >
         <el-option
           v-for="date in props.availableDates"
           :key="date"
-          :label="`${props.trendView.shortLabel}${DATA_TIME_LABEL}：${date}`"
+          :label="date"
           :value="date"
         />
       </el-select>
 
       <div class="filter-actions">
-        <el-button plain size="large" @click="emit('reset')">重置查询</el-button>
+        <el-button plain size="large" aria-label="重置所有过滤条件" @click="emit('reset')">重置</el-button>
       </div>
     </div>
 
     <div class="filter-presets">
       <div class="filter-presets__head">
-        <div>
-          <p class="filter-presets__eyebrow">快捷预设</p>
-          <h3 class="filter-presets__title">一键切到当前 {{ props.trendView.shortLabel }} 高频观察视角</h3>
-        </div>
-        <p class="filter-presets__tip">预设会叠加在当前 {{ props.trendView.shortLabel }} 搜索与状态范围之上。</p>
+        <p class="filter-presets__eyebrow">快捷预设</p>
       </div>
 
       <div class="preset-list">

@@ -31,37 +31,23 @@ const strongestNote = computed(() => {
 
 <template>
   <section class="summary-section">
-    <div class="section-head">
-      <div>
-        <h3>市场摘要</h3>
-        <p>所有结论均基于当前激活的 {{ trendView.label }} 视图。</p>
-      </div>
-      <el-tag effect="plain" round size="large" type="primary">{{ trendView.label }}</el-tag>
-    </div>
-
     <div class="summary-grid">
-      <el-card class="summary-card summary-card--accent" shadow="hover">
-        <p class="summary-label">{{ trendView.shortLabel }} 总体结论</p>
+      <el-card class="summary-card summary-card--accent" shadow="hover" role="region" aria-label="总体结论">
+        <p class="summary-label">总体结论</p>
         <h2>{{ market.conclusionTitle }}</h2>
         <p class="summary-note">{{ market.conclusionNote }}</p>
       </el-card>
 
-      <el-card class="summary-card" shadow="hover">
-        <p class="summary-label">{{ trendView.shortLabel }} YES / NO 分布</p>
+      <el-card class="summary-card" shadow="hover" role="region" aria-label="YES / NO 分布">
+        <p class="summary-label">YES / NO</p>
         <h2>{{ distributionValue }}</h2>
         <p class="summary-note">{{ distributionNote }}</p>
       </el-card>
 
-      <el-card class="summary-card" shadow="hover">
-        <p class="summary-label">{{ trendView.shortLabel }} 整体温度</p>
+      <el-card class="summary-card" shadow="hover" role="region" aria-label="整体温度">
+        <p class="summary-label">整体温度</p>
         <h2>{{ hasMarketData ? formatPercent(market.averageDeviation) : '--' }}</h2>
-        <p class="summary-note">{{ hasMarketData ? market.temperatureLabel : '等待可用数据后展示温度结论' }}</p>
-      </el-card>
-
-      <el-card class="summary-card" shadow="hover">
-        <p class="summary-label">{{ trendView.shortLabel }} 最强标的</p>
-        <h2>{{ market.strongestItem?.name ?? '--' }}</h2>
-        <p class="summary-note">{{ strongestNote }}</p>
+        <p class="summary-note">{{ hasMarketData ? market.temperatureLabel : '等待数据' }}</p>
       </el-card>
     </div>
   </section>

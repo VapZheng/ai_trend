@@ -109,14 +109,10 @@ function handleTrendViewChange(value: string | number | boolean) {
   <section class="hero-card app-header">
     <div class="app-header__top">
       <div class="app-header__copy">
-        <p class="eyebrow">Fishbowl Trend Model v1.0 · 鱼盆模型趋势看板</p>
-
         <div class="app-header__title-row">
-          <h1>鱼盆模型趋势看板</h1>
-          <el-tag effect="dark" round size="large" type="primary">当前视图：{{ trendViewLabel }}</el-tag>
+          <h1>趋势看板</h1>
+          <el-tag effect="dark" round size="large" type="primary">{{ trendViewLabel }}</el-tag>
         </div>
-
-        <p class="hero-description">{{ headerDescription }}</p>
       </div>
 
       <el-segmented
@@ -129,23 +125,23 @@ function handleTrendViewChange(value: string | number | boolean) {
     </div>
 
     <div class="app-header__status">
-      <div class="app-header__fact">
-        <div class="app-header__fact-head">
-          <span class="app-header__fact-label">数据新鲜度</span>
-          <el-tag :type="freshnessTagType" effect="plain" round size="small">{{ freshnessLabel }}</el-tag>
-        </div>
-        <p>{{ freshnessNote }}</p>
+      <div class="app-header__fact-compact">
+        <span class="app-header__fact-label">数据</span>
+        <el-tag :type="freshnessTagType" effect="plain" round size="small">
+          <span v-if="isRefreshing" class="loading-spinner">⟳</span>
+          {{ freshnessLabel }}
+        </el-tag>
+        <span class="app-header__fact-time">{{ freshnessNote }}</span>
       </div>
 
-      <div class="app-header__fact">
-        <div class="app-header__fact-head">
-          <span class="app-header__fact-label">最近执行</span>
-          <el-tag :type="executionTagType" effect="plain" round size="small">{{ executionLabel }}</el-tag>
-        </div>
-        <p>{{ executionNote }}</p>
+      <div class="app-header__fact-compact">
+        <span class="app-header__fact-label">执行</span>
+        <el-tag :type="executionTagType" effect="plain" round size="small" role="status" :aria-live="lastRun?.status === 'failed' ? 'polite' : 'off'">
+          <span v-if="isRefreshing" class="loading-spinner">⟳</span>
+          {{ executionLabel }}
+        </el-tag>
+        <span class="app-header__fact-time">{{ executionNote }}</span>
       </div>
-
-      <p class="app-header__refresh-note">{{ autoRefreshSummary }}</p>
     </div>
   </section>
 </template>
