@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useDarkMode } from '../composables/useDarkMode';
 
 const { isDarkMode, toggleDarkMode } = useDarkMode();
+const toggleLabel = computed(() => (isDarkMode.value ? '切换到浅色模式' : '切换到深色模式'));
 </script>
 
 <template>
   <button
     class="theme-toggle"
     @click="toggleDarkMode"
-    :title="isDarkMode ? '切换到浅色模式' : '切换到深色模式'"
-    aria-label="切换深色模式"
+    :title="toggleLabel"
+    :aria-label="toggleLabel"
+    :aria-pressed="isDarkMode"
   >
     <div class="theme-toggle__icon">
       <svg
@@ -113,5 +116,4 @@ const { isDarkMode, toggleDarkMode } = useDarkMode();
   }
 }
 </style>
-
 

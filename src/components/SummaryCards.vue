@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { DataAnalysis, PieChart, Opportunity } from '@element-plus/icons-vue';
 import type { TrendViewMeta } from '../types';
 import type { MarketOverview } from '../utils/dashboardOverview';
 import { formatPercent } from '../utils/formatters';
@@ -20,13 +21,6 @@ const distributionNote = computed(() => {
 
   return `YES ${(props.market.yesRatio * 100).toFixed(1)}% · NO ${(props.market.noRatio * 100).toFixed(1)}%`;
 });
-const strongestNote = computed(() => {
-  if (!props.market.strongestItem) {
-    return '当前筛选范围内暂无最强标的';
-  }
-
-  return `${props.market.strongestItem.code} · ${formatPercent(props.market.strongestItem.deviationRate)}`;
-});
 </script>
 
 <template>
@@ -34,7 +28,7 @@ const strongestNote = computed(() => {
     <div class="summary-grid">
       <el-card class="summary-card summary-card--accent" shadow="hover" role="region" aria-label="总体结论">
         <div class="summary-card__header">
-          <i class="el-icon-data-analysis"></i>
+          <el-icon><DataAnalysis /></el-icon>
           <p class="summary-label">总体结论</p>
         </div>
         <h2 class="summary-card__title">{{ market.conclusionTitle }}</h2>
@@ -43,7 +37,7 @@ const strongestNote = computed(() => {
 
       <el-card class="summary-card" shadow="hover" role="region" aria-label="YES / NO 分布">
         <div class="summary-card__header">
-          <i class="el-icon-pie-chart"></i>
+          <el-icon><PieChart /></el-icon>
           <p class="summary-label">YES / NO</p>
         </div>
         <h2 class="summary-card__title">{{ distributionValue }}</h2>
@@ -52,7 +46,7 @@ const strongestNote = computed(() => {
 
       <el-card class="summary-card" shadow="hover" role="region" aria-label="整体温度">
         <div class="summary-card__header">
-          <i class="el-icon-temperature"></i>
+          <el-icon><Opportunity /></el-icon>
           <p class="summary-label">整体温度</p>
         </div>
         <h2 class="summary-card__title">{{ hasMarketData ? formatPercent(market.averageDeviation) : '--' }}</h2>
@@ -61,3 +55,17 @@ const strongestNote = computed(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+.summary-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.summary-card__header .el-icon {
+  color: var(--color-primary);
+  font-size: 16px;
+}
+</style>

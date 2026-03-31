@@ -1,0 +1,43 @@
+/* Element Plus 骨架屏深色模式全局覆盖 */
+
+/* 浅色模式 - 保持原样 */
+.el-skeleton {
+  background-color: transparent;
+}
+
+.el-skeleton__item {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+.el-skeleton__text {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+.el-skeleton__paragraph {
+  background: transparent;
+}
+
+.el-skeleton__p-item {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+/* 深色模式 - 使用深色渐变 */
+@media (prefers-color-scheme: dark) {
+  .el-skeleton__item,
+  .el-skeleton__text,
+  .el-skeleton__p-item {
+    background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%) !important;
+    background-size: 200% 100% !important;
+  }
+}
+
+/* 手动深色模式切换 */
+html.dark-mode .el-skeleton__item,
+html.dark-mode .el-skeleton__text,
+html.dark-mode .el-skeleton__p-item {
+  background: linear-gradient(90deg, #2D3E52 25%, #1A2332 50%, #2D3E52 75%) !important;
+  background-size: 200% 100% !important;
+}

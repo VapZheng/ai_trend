@@ -77,12 +77,17 @@ function rowClassName({ row }: { row: TrendItem }) {
   </div>
 
   <div class="mobile-list">
-    <button
+    <article
       v-for="item in items"
       :key="item.code"
       :class="['mobile-card', { 'mobile-card--active': item.code === selectedCode }]"
-      type="button"
+      :aria-label="`${item.name} ${item.code}`"
+      :aria-pressed="item.code === selectedCode"
+      role="button"
+      tabindex="0"
       @click="emit('select', item)"
+      @keydown.enter.prevent="emit('select', item)"
+      @keydown.space.prevent="emit('select', item)"
     >
       <div class="mobile-card__head">
         <div>
@@ -103,7 +108,7 @@ function rowClassName({ row }: { row: TrendItem }) {
         <span class="rotation-mobile-actions__hint">点击卡片切换当前对象</span>
         <el-button plain size="small" @click.stop="emit('view-detail', item)">查看明细</el-button>
       </div>
-    </button>
+    </article>
   </div>
 </template>
 
@@ -146,6 +151,11 @@ function rowClassName({ row }: { row: TrendItem }) {
   border-color: var(--color-primary);
   background: var(--color-bg-tertiary);
   box-shadow: var(--shadow-sm);
+}
+
+.mobile-card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .mobile-card--active {

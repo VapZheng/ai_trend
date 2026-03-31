@@ -35,6 +35,29 @@ function handlePageChange(page: AppPageKey) {
   }
   activePage.value = page;
 }
+
+function getTabId(page: AppPageKey): string {
+  return `app-tab-${page}`;
+}
+
+function getPanelId(page: AppPageKey): string {
+  return `app-panel-${page}`;
+}
+
+function handleTabKeydown(event: KeyboardEvent, index: number) {
+  const lastIndex = pageTabs.length - 1;
+  if (event.key === 'ArrowRight') {
+    const nextIndex = index === lastIndex ? 0 : index + 1;
+    handlePageChange(pageTabs[nextIndex].value);
+  } else if (event.key === 'ArrowLeft') {
+    const nextIndex = index === 0 ? lastIndex : index - 1;
+    handlePageChange(pageTabs[nextIndex].value);
+  } else if (event.key === 'Home') {
+    handlePageChange(pageTabs[0].value);
+  } else if (event.key === 'End') {
+    handlePageChange(pageTabs[lastIndex].value);
+  }
+}
 </script>
 
 <template>
@@ -50,13 +73,17 @@ function handlePageChange(page: AppPageKey) {
         <div class="app-switcher__controls">
           <div class="app-switcher__tabs" role="tablist" aria-label="页面切换">
             <button
-              v-for="item in pageTabs"
+              v-for="(item, index) in pageTabs"
               :key="item.value"
+              :id="getTabId(item.value)"
+              :aria-controls="getPanelId(item.value)"
               :aria-selected="activePage === item.value"
+              :tabindex="activePage === item.value ? 0 : -1"
               :class="['app-page-tab', { 'app-page-tab--active': activePage === item.value }]"
               role="tab"
               type="button"
               @click="handlePageChange(item.value)"
+              @keydown="handleTabKeydown($event, index)"
             >
               {{ item.label }}
             </button>
@@ -66,11 +93,23 @@ function handlePageChange(page: AppPageKey) {
         </div>
       </section>
 
-      <section v-show="activePage === 'dashboard'" class="app-page-stage" role="tabpanel">
+      <section
+        v-show="activePage === 'dashboard'"
+        :id="getPanelId('dashboard')"
+        :aria-labelledby="getTabId('dashboard')"
+        class="app-page-stage"
+        role="tabpanel"
+      >
         <DashboardPage />
       </section>
 
-      <section v-show="activePage === 'sector-rotation'" class="app-page-stage" role="tabpanel">
+      <section
+        v-show="activePage === 'sector-rotation'"
+        :id="getPanelId('sector-rotation')"
+        :aria-labelledby="getTabId('sector-rotation')"
+        class="app-page-stage"
+        role="tabpanel"
+      >
         <SectorRotationPage v-if="isPageMounted('sector-rotation')" />
       </section>
     </main>

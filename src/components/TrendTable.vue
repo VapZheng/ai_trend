@@ -136,7 +136,7 @@ function rowClassName({ row }: { row: TrendItem }) {
     </div>
 
     <div class="mobile-list">
-      <button
+      <article
         v-for="item in items"
         :key="item.code"
         :class="[
@@ -146,8 +146,13 @@ function rowClassName({ row }: { row: TrendItem }) {
             'mobile-card--compared': compareCodes.includes(item.code),
           },
         ]"
-        type="button"
+        :aria-label="`${item.name} ${item.code}`"
+        :aria-pressed="item.code === selectedCode"
+        role="button"
+        tabindex="0"
         @click="handleSelect(item)"
+        @keydown.enter.prevent="handleSelect(item)"
+        @keydown.space.prevent="handleSelect(item)"
       >
         <div class="mobile-card__head">
           <div>
@@ -170,7 +175,7 @@ function rowClassName({ row }: { row: TrendItem }) {
             {{ getCompareActionLabel(item) }}
           </el-button>
         </div>
-      </button>
+      </article>
     </div>
   </section>
 </template>
@@ -242,6 +247,11 @@ function rowClassName({ row }: { row: TrendItem }) {
   border-color: var(--color-primary);
   background: var(--color-bg-tertiary);
   box-shadow: var(--shadow-sm);
+}
+
+.mobile-card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .mobile-card--active {

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import {
-  DATA_TIME_LABEL,
   FILTER_PRESET_OPTIONS,
   SORT_OPTIONS,
   STATUS_OPTIONS,
@@ -32,8 +31,8 @@ const emit = defineEmits<{
 const activeFiltersCount = computed(() => {
   let count = 0;
   if (props.searchTerm) count++;
-  if (props.statusFilter !== 'all') count++;
-  if (props.sortKey !== 'default') count++;
+  if (props.statusFilter !== 'ALL') count++;
+  if (props.sortKey !== 'rank-asc') count++;
   if (props.selectedDataDate) count++;
   return count;
 });
