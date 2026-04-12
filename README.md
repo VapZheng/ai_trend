@@ -93,7 +93,7 @@ npm run build
 docker compose up --build
 ```
 
-启动后访问：`http://localhost:8000`
+启动后访问：`http://localhost:8001`
 
 `sqlite` 数据会持久化到 `docker` volume：`trend-data`
 
