@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { AUTO_REFRESH_CONSTRAINT_NOTE } from '../constants';
-import type { AutoRefreshState, RefreshRun, TrendViewKey, TrendViewOption } from '../types';
-import { getRunSourceLabel } from '../utils/dashboardOverview';
+import type { AutoRefreshState, TrendViewKey, TrendViewOption } from '../types';
 
 const props = defineProps<{
   activeTrendView: TrendViewKey;
   autoRefresh: AutoRefreshState | null;
   isRefreshing: boolean;
-  lastRun: RefreshRun | null;
   latestDataDate: string;
   selectedDataDate: string;
   trendViewDescription: string;
@@ -48,36 +46,24 @@ const freshnessNote = computed(() => {
   const selectedDate = props.selectedDataDate || '--';
   return `当前 ${selectedDate} · 最新 ${props.latestDataDate} · 后台 ${props.updatedAt}`;
 });
-const executionLabel = computed(() => {
-  if (props.isRefreshing) {
-    return '执行中';
-  }
-
-  if (!props.lastRun) {
+const collectedAtLabel = computed(() => {
+  if (props.updatedAt.length === 0) {
     return '暂无记录';
   }
 
-  return props.lastRun.status === 'success' ? '执行成功' : '执行失败';
-});
-const executionNote = computed(() => {
-  if (!props.lastRun) {
-    return '完成首次自动取数后，这里会显示最近一次执行来源和完成时间。';
-  }
-
-  const runTime = props.lastRun.finishedAt ?? props.lastRun.startedAt;
-  return `${getRunSourceLabel(props.lastRun.source)} · ${runTime}`;
+  return props.updatedAt;
 });
 const autoRefreshSummary = computed(() => {
   const intervalSeconds = props.autoRefresh?.intervalSeconds ?? 10;
   if (props.isRefreshing) {
-    return `默认 ${intervalSeconds} 秒自动取数，当前执行中。${AUTO_REFRESH_CONSTRAINT_NOTE}`;
+    return `默认 ${intervalSeconds} 秒自动取数，仅在北京时间 09:00-15:15 生效，当前执行中。${AUTO_REFRESH_CONSTRAINT_NOTE}`;
   }
 
   if (props.autoRefresh?.nextRunAt) {
-    return `默认 ${intervalSeconds} 秒自动取数，下次执行 ${props.autoRefresh.nextRunAt}。${AUTO_REFRESH_CONSTRAINT_NOTE}`;
+    return `默认 ${intervalSeconds} 秒自动取数，仅在北京时间 09:00-15:15 生效，下次执行 ${props.autoRefresh.nextRunAt}。${AUTO_REFRESH_CONSTRAINT_NOTE}`;
   }
 
-  return `默认 ${intervalSeconds} 秒自动取数。${AUTO_REFRESH_CONSTRAINT_NOTE}`;
+  return `默认 ${intervalSeconds} 秒自动取数，仅在北京时间 09:00-15:15 生效。${AUTO_REFRESH_CONSTRAINT_NOTE}`;
 });
 const freshnessTagType = computed(() => {
   if (props.isRefreshing) {
@@ -85,21 +71,6 @@ const freshnessTagType = computed(() => {
   }
 
   return isLatestView.value ? 'success' : 'warning';
-});
-const executionTagType = computed(() => {
-  if (props.isRefreshing) {
-    return 'primary';
-  }
-
-  if (props.lastRun?.status === 'failed') {
-    return 'warning';
-  }
-
-  if (props.lastRun?.status === 'success') {
-    return 'success';
-  }
-
-  return 'info';
 });
 
 function handleTrendViewChange(value: string | number | boolean) {
@@ -149,10 +120,9 @@ function toggleDetails() {
       </div>
 
       <div class="app-header__fact-compact">
-        <span class="app-header__fact-label">执行</span>
-        <el-tag :type="executionTagType" effect="plain" round size="small" role="status" :aria-live="lastRun?.status === 'failed' ? 'polite' : 'off'">
-          <span v-if="isRefreshing" class="loading-spinner">⟳</span>
-          {{ executionLabel }}
+        <span class="app-header__fact-label">采集</span>
+        <el-tag effect="plain" round size="small" type="info">
+          {{ collectedAtLabel }}
         </el-tag>
       </div>
     </div>
@@ -164,8 +134,8 @@ function toggleDetails() {
           <span class="app-header__detail-value">{{ freshnessNote }}</span>
         </div>
         <div class="app-header__detail-item">
-          <span class="app-header__detail-label">执行信息</span>
-          <span class="app-header__detail-value">{{ executionNote }}</span>
+          <span class="app-header__detail-label">采集时间</span>
+          <span class="app-header__detail-value">{{ collectedAtLabel }}</span>
         </div>
         <div class="app-header__detail-item">
           <span class="app-header__detail-label">自动刷新</span>

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from threading import Event, Thread
 from typing import Callable
 
@@ -8,6 +8,9 @@ from .errors import ConflictError
 from .models import REFRESH_SOURCE_SCHEDULER, RefreshRun
 
 SCHEDULER_POLL_SECONDS = 1
+BEIJING_TIME_OFFSET = timedelta(hours=8)
+MARKET_OPEN_TIME = time(hour=9, minute=0)
+MARKET_CLOSE_TIME = time(hour=15, minute=15)
 
 
 class RefreshScheduler:
@@ -84,9 +87,26 @@ def calculate_next_run_at(
 ) -> str | None:
     if is_refreshing:
         return None
+    now = now_provider()
     if last_run is None:
-        return now_provider().strftime('%Y-%m-%d %H:%M:%S')
+        return clamp_to_beijing_market_window(now).strftime('%Y-%m-%d %H:%M:%S')
+
     base_time = last_run.finished_at or last_run.started_at
-    next_run_time = datetime.strptime(base_time, '%Y-%m-%d %H:%M:%S')
-    next_run_time += timedelta(seconds=interval_seconds)
-    return next_run_time.strftime('%Y-%m-%d %H:%M:%S')
+    next_run_time = datetime.strptime(base_time, '%Y-%m-%d %H:%M:%S') + timedelta(seconds=interval_seconds)
+    candidate_time = max(next_run_time, now)
+    return clamp_to_beijing_market_window(candidate_time).strftime('%Y-%m-%d %H:%M:%S')
+
+
+def clamp_to_beijing_market_window(current_time: datetime) -> datetime:
+    beijing_now = current_time + BEIJING_TIME_OFFSET
+    market_open = datetime.combine(beijing_now.date(), MARKET_OPEN_TIME)
+    market_close = datetime.combine(beijing_now.date(), MARKET_CLOSE_TIME)
+
+    if beijing_now < market_open:
+        return market_open - BEIJING_TIME_OFFSET
+
+    if beijing_now > market_close:
+        next_open = datetime.combine(beijing_now.date() + timedelta(days=1), MARKET_OPEN_TIME)
+        return next_open - BEIJING_TIME_OFFSET
+
+    return current_time

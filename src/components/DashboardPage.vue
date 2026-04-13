@@ -21,7 +21,6 @@ const {
   handleTrendViewChange,
   isLoading,
   items,
-  lastRun,
   marketOverview,
   presetCounts,
   recentCompareCodes,
@@ -52,7 +51,6 @@ const {
         :active-trend-view="activeTrendView"
         :auto-refresh="autoRefresh ?? null"
         :is-refreshing="Boolean(serverRefreshing)"
-        :last-run="lastRun ?? null"
         :latest-data-date="activeDatasetView?.latestDataDate ?? dataset.latestDataDate"
         :selected-data-date="selectedDataDate"
         :trend-view-description="activeTrendViewMeta.description"
