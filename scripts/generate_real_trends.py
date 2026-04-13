@@ -16,11 +16,10 @@ from backend.config import (
     DEFAULT_LOOKBACK_DAYS,
     DEFAULT_MA_WINDOWS,
     DEFAULT_RETRY_COUNT,
-    DEFAULT_SCHEDULER_INTERVAL_MINUTES,
     FetchOptions,
 )
 from backend.fetcher import build_default_fetcher
-from backend.models import REFRESH_SOURCE_CLI, RUN_STATUS_SUCCESS, RefreshRun, SchedulerSettings
+from backend.models import REFRESH_SOURCE_CLI, RUN_STATUS_SUCCESS, RefreshRun
 from backend.repository import SQLiteTrendRepository
 
 
@@ -35,10 +34,6 @@ def main() -> None:
     args = parse_args()
     repository = SQLiteTrendRepository(
         database_path=Path(args.database),
-        default_scheduler=SchedulerSettings(
-            enabled=False,
-            interval_minutes=DEFAULT_SCHEDULER_INTERVAL_MINUTES,
-        ),
         now_provider=datetime.now,
     )
     repository.initialize()

@@ -169,46 +169,20 @@ html.dark-mode .page-shell {
 .app-header__status {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding-top: 12px;
-  border-top: 1px solid var(--color-border-light);
-}
-
-.app-header__fact-compact {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-}
-
-.app-header__fact-label {
-  color: var(--color-text-secondary);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.app-header__fact-time {
-  color: var(--color-text-tertiary);
-  font-size: 12px;
-}
-
-.app-header__details {
-  display: grid;
   gap: 12px;
+  flex-wrap: wrap;
   padding-top: 12px;
   border-top: 1px solid var(--color-border-light);
-  margin-top: 12px;
 }
 
-.app-header__detail-label {
+.app-header__meta-label {
   color: var(--color-text-secondary);
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
-.app-header__detail-value {
+.app-header__meta-value {
   color: var(--color-text-tertiary);
   font-size: 13px;
   line-height: 1.5;
@@ -665,10 +639,6 @@ html.dark-mode .preset-chip--active {
   }
 
   .hero-meta__primary {
-    grid-template-columns: 1fr;
-  }
-
-  .app-header__status {
     grid-template-columns: 1fr;
   }
 
