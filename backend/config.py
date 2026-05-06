@@ -32,6 +32,7 @@ class AppConfig:
     host: str
     port: int
     static_dir: Path | None
+    wecom_webhook: str
 
 
 def load_app_config(
@@ -51,6 +52,7 @@ def load_app_config(
         host=host or os.getenv('TREND_HOST', DEFAULT_HOST),
         port=port or parse_int_env('TREND_PORT', DEFAULT_PORT),
         static_dir=resolve_static_dir(static_dir),
+        wecom_webhook=os.getenv('TREND_WECOM_WEBHOOK', ''),
     )
 
 

@@ -45,6 +45,7 @@ REFRESH_SOURCE_CLI = 'cli'
 REFRESH_SOURCE_SCHEDULER = 'scheduler'
 RUN_STATUS_FAILED = 'failed'
 RUN_STATUS_SUCCESS = 'success'
+ALERT_RULE_ANY_MA_NO = 'any_ma_no'
 
 
 @dataclass(frozen=True)
@@ -94,3 +95,32 @@ class DashboardPayload:
             'lastRun': self.last_run.to_dict() if self.last_run else None,
             'isRefreshing': self.is_refreshing,
         }
+
+
+@dataclass(frozen=True)
+class TrendAlertState:
+    rule_key: str
+    code: str
+    is_active: bool
+    active_windows: tuple[str, ...]
+    last_entered_at: str | None
+    last_notified_at: str | None
+    updated_at: str
+
+
+@dataclass(frozen=True)
+class TriggeredAlertItem:
+    code: str
+    name: str
+    close: float
+    changed_windows: tuple[str, ...]
+    change_labels: list[str]
+    status_started_at: str
+
+
+@dataclass(frozen=True)
+class AlertEvaluationResult:
+    triggered_items: list[TriggeredAlertItem]
+    upserted_states: list[TrendAlertState]
+    entered_codes: list[str]
+    exited_codes: list[str]

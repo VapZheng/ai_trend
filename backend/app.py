@@ -3,8 +3,10 @@ from __future__ import annotations
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
 
+from .alert_service import AnyMaNoAlertService
 from .config import load_app_config
 from .fetcher import build_default_fetcher
+from .notifiers import WeComNotifier
 from .repository import SQLiteTrendRepository
 from .rotation_models import DEFAULT_ROTATION_TARGETS
 from .rotation_repository import SQLiteRotationRepository
@@ -41,6 +43,8 @@ def main() -> None:
         repository=repository,
         fetch_options=config.fetch_options,
         now_provider=datetime.now,
+        alert_service=AnyMaNoAlertService(),
+        notifier=WeComNotifier(config.wecom_webhook),
     )
     rotation_service = SectorRotationService(
         fetch_options=config.fetch_options,

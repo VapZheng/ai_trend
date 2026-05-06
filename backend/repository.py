@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .fetcher import DailyPoint, IndexTarget, build_trend_item, rank_items
-from .models import RefreshRun, TrendDataset
+from .models import RefreshRun, TrendAlertState, TrendDataset
 
 LEGACY_DATASET_WINDOWS = (5, 20)
 
@@ -29,6 +29,19 @@ SCHEMA_STATEMENTS = (
       started_at TEXT NOT NULL,
       finished_at TEXT,
       error_message TEXT
+    )
+    ''',
+    '''
+    CREATE TABLE IF NOT EXISTS trend_alert_states (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      rule_key TEXT NOT NULL,
+      code TEXT NOT NULL,
+      is_active INTEGER NOT NULL,
+      active_windows TEXT NOT NULL,
+      last_entered_at TEXT,
+      last_notified_at TEXT,
+      updated_at TEXT NOT NULL,
+      UNIQUE(rule_key, code)
     )
     ''',
 )
@@ -107,6 +120,55 @@ class SQLiteTrendRepository:
             error_message=row['error_message'],
         )
 
+    def list_alert_states(self, rule_key: str) -> dict[str, TrendAlertState]:
+        query = '''
+            SELECT rule_key, code, is_active, active_windows, last_entered_at, last_notified_at, updated_at
+            FROM trend_alert_states
+            WHERE rule_key = ?
+        '''
+        with self._connect() as connection:
+            rows = connection.execute(query, (rule_key,)).fetchall()
+        return {row['code']: build_alert_state(row) for row in rows}
+
+    def upsert_alert_state(self, state: TrendAlertState) -> None:
+        with self._connect() as connection:
+            connection.execute(
+                '''
+                INSERT INTO trend_alert_states (
+                    rule_key, code, is_active, active_windows, last_entered_at, last_notified_at, updated_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(rule_key, code) DO UPDATE SET
+                    is_active = excluded.is_active,
+                    active_windows = excluded.active_windows,
+                    last_entered_at = excluded.last_entered_at,
+                    last_notified_at = excluded.last_notified_at,
+                    updated_at = excluded.updated_at
+                ''',
+                (
+                    state.rule_key,
+                    state.code,
+                    int(state.is_active),
+                    serialize_active_windows(state.active_windows),
+                    state.last_entered_at,
+                    state.last_notified_at,
+                    state.updated_at,
+                ),
+            )
+
+    def mark_alerts_notified(self, rule_key: str, codes: list[str], notified_at: str) -> None:
+        if len(codes) == 0:
+            return
+        placeholders = ','.join('?' for _ in codes)
+        query = f'''
+            UPDATE trend_alert_states
+            SET last_notified_at = ?, updated_at = ?
+            WHERE rule_key = ? AND code IN ({placeholders})
+        '''
+        parameters = (notified_at, notified_at, rule_key, *codes)
+        with self._connect() as connection:
+            connection.execute(query, parameters)
+
     def _connect(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self._database_path, timeout=30)
         connection.row_factory = sqlite3.Row
@@ -183,3 +245,25 @@ def clone_legacy_item(item: dict[str, Any]) -> dict[str, Any]:
         **item,
         'history': [dict(point) for point in item['history']],
     }
+
+
+def build_alert_state(row: sqlite3.Row) -> TrendAlertState:
+    return TrendAlertState(
+        rule_key=row['rule_key'],
+        code=row['code'],
+        is_active=bool(row['is_active']),
+        active_windows=parse_active_windows(row['active_windows']),
+        last_entered_at=row['last_entered_at'],
+        last_notified_at=row['last_notified_at'],
+        updated_at=row['updated_at'],
+    )
+
+
+def serialize_active_windows(active_windows: tuple[str, ...]) -> str:
+    return ','.join(active_windows)
+
+
+def parse_active_windows(raw_value: str) -> tuple[str, ...]:
+    if raw_value == '':
+        return ()
+    return tuple(part for part in raw_value.split(',') if part)

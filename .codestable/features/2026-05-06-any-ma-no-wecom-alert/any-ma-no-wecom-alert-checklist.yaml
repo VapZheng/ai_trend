@@ -1,0 +1,51 @@
+feature: 2026-05-06-any-ma-no-wecom-alert
+created: 2026-05-06
+
+steps:
+  - action: "规则骨架：把告警判定从进入任一 NO 改成比较上次窗口快照与本次状态"
+    exit_signal: "规则测试能区分 YES->NO、NO->YES 和无变化"
+    status: done
+  - action: "消息输入结构：为触发项补齐切换明细与方向文案"
+    exit_signal: "消息格式化测试里能看到 ma5 YES->NO 和 ma20 NO->YES"
+    status: done
+  - action: "刷新流程接入：保持 save_dataset -> compare -> notify -> save_refresh_run 顺序"
+    exit_signal: "服务集成测试证明一次刷新只发一条汇总消息，且失败路径仍写 refresh_run failed"
+    status: done
+  - action: "测试收尾：覆盖首次基线、双窗口同时切换、持续不变不通知"
+    exit_signal: "后端相关测试全部通过"
+    status: done
+
+checks:
+  - item: "触发项必须能明确携带 changed_windows、change_labels 和 status_started_at"
+    source: 名词契约
+    status: passed
+  - item: "刷新流程必须在保存 dataset 后比较上次快照和本次窗口状态"
+    source: 编排骨架
+    status: passed
+  - item: "首次建立基线时只更新快照，不发送企业微信通知"
+    source: 流程级约束
+    status: passed
+  - item: "发送失败时 refresh_run 记 failed，last_notified_at 不更新"
+    source: 流程级约束
+    status: passed
+  - item: "刷新主流程、告警规则服务、告警状态持久化、企业微信消息文案四个挂载点都按设计更新"
+    source: 挂载点
+    status: passed
+  - item: "不新增邮件或其他通道，不回扫历史，不重复推送持续不变状态，不改前端"
+    source: 范围守护
+    status: passed
+  - item: "上次无快照、本次 ma5=NO 且 ma20=YES 时不发送通知，只建立基线"
+    source: 验收场景
+    status: passed
+  - item: "上次无快照后的下一次 ma5 从 NO 切到 YES 时发送 ma5 NO->YES"
+    source: 验收场景
+    status: passed
+  - item: "上次 ma20 为 NO 且本次仍为 NO 时不发送通知"
+    source: 验收场景
+    status: passed
+  - item: "同一指数同时发生 ma5 NO->YES 和 ma20 YES->NO 时合并为一条明细"
+    source: 验收场景
+    status: passed
+  - item: "一次刷新内多个指数发生切换时企业微信只发一条汇总消息"
+    source: 验收场景
+    status: passed
