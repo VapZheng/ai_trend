@@ -4,10 +4,12 @@ from datetime import datetime
 from threading import Lock
 from typing import Callable
 
+from .alert_service import AnyMaNoAlertService
 from .config import DEFAULT_AUTO_REFRESH_INTERVAL_SECONDS
 from .config import FetchOptions
 from .errors import ConflictError, ValidationError
 from .models import AutoRefreshState, DashboardPayload, RefreshRun
+from .models import ALERT_RULE_ANY_MA_NO
 from .models import RUN_STATUS_FAILED, RUN_STATUS_SUCCESS
 
 
@@ -18,11 +20,15 @@ class TrendDashboardService:
         repository,
         fetch_options: FetchOptions,
         now_provider: Callable[[], datetime],
+        alert_service: AnyMaNoAlertService,
+        notifier,
     ) -> None:
         self._fetcher = fetcher
         self._repository = repository
         self._fetch_options = fetch_options
         self._now_provider = now_provider
+        self._alert_service = alert_service
+        self._notifier = notifier
         self._refresh_lock = Lock()
 
     def build_dashboard(self, next_run_at: str | None) -> DashboardPayload:
@@ -47,11 +53,16 @@ class TrendDashboardService:
         started_at = self._format_now()
         try:
             dataset = self._fetcher.build_dataset(self._fetch_options)
-        except Exception as error:
-            self._save_failed_run(source, started_at, error)
-            raise
-        else:
             self._repository.save_dataset(dataset)
+            alert_result = self._alert_service.evaluate_and_persist(dataset, self._repository, self._format_now())
+            if len(alert_result.triggered_items) > 0:
+                message = self._alert_service.format_message(alert_result.triggered_items, dataset['updatedAt'])
+                self._notifier.send_markdown(message)
+                self._repository.mark_alerts_notified(
+                    rule_key=ALERT_RULE_ANY_MA_NO,
+                    codes=alert_result.entered_codes,
+                    notified_at=self._format_now(),
+                )
             self._repository.save_refresh_run(
                 RefreshRun(
                     source=source,
@@ -60,6 +71,9 @@ class TrendDashboardService:
                     finished_at=self._format_now(),
                 ),
             )
+        except Exception as error:
+            self._save_failed_run(source, started_at, error)
+            raise
         finally:
             self._refresh_lock.release()
 
